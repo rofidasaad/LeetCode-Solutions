@@ -1,17 +1,19 @@
 class Solution {
 public:
-    int removeDuplicates(vector<int>& nums) {
-        if (nums.empty()) return 0;
+    int removeDuplicates(std::vector<int>& nums) {
+        if (nums.empty()) {
+            return 0;
+        }
         
-        int k = 1;
+        int writePointer = 1;
         
-        for (int i = 1; i < nums.size(); ++i) {
-            if (nums[i] != nums[i - 1]) {
-                nums[k] = nums[i];
-                k++;
+        for (int readPointer = 1; readPointer < nums.size(); readPointer++) {
+            if (nums[readPointer] != nums[readPointer - 1]) {
+                nums[writePointer] = nums[readPointer];
+                writePointer++;
             }
         }
         
-        return k;
+        return writePointer;
     }
 };

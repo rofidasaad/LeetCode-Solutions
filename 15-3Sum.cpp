@@ -1,5 +1,4 @@
-
-    class Solution {
+class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
      
@@ -36,7 +35,7 @@ public:
                         end--;
                     } 
                  }
-                 else if (sum < 0)
+                 else if(sum<0)
                  {
                      st++;
                  }
@@ -44,7 +43,10 @@ public:
                  {
                      end--;
                  }
-             }
+
+             
+           }
+
        }
 
      return v1;

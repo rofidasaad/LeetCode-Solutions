@@ -1,24 +1,27 @@
 class Solution {
 public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>> result;
-        vector<int> combination;
-        sort(candidates.begin(), candidates.end());
-        backtrack(candidates, target, 0, combination, result);
-        return result;
-    }
+
+
+    vector<vector<int>>answer;
+    vector<int>tmp;
+    int n;
+    void find(int index,int target,vector<int>& candidates){
+        if(!target)
+            answer.push_back(tmp);
+        
+        if(target <=0||index == n)return;
     
-    void backtrack(vector<int>& candidates, int target, int start, vector<int>& combination, vector<vector<int>>& result) {
-        if (target == 0) {
-            result.push_back(combination);
-            return;
-        }
-        for (int i = start; i < candidates.size(); ++i) {
-            if (i > start && candidates[i] == candidates[i - 1]) continue;
-            if (candidates[i] > target) break;
-            combination.push_back(candidates[i]);
-            backtrack(candidates, target - candidates[i], i + 1, combination, result);
-            combination.pop_back();
-        }
+        tmp.push_back(candidates[index]);
+       find(index+1,target - candidates[index] ,candidates);
+        tmp.pop_back();
+        while(index+1 <n && candidates[index] == candidates[index+1])index++;
+        find(index+1,target,candidates);
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+
+        n = candidates.size();
+        sort(candidates.begin(),candidates.end());
+       find(0,target,candidates);
+        return answer;
     }
 };

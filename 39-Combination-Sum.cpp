@@ -1,27 +1,42 @@
-#include <vector>
-using namespace std;
+
 
 class Solution {
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>> res;
-        vector<int> comb;
-        dfs(candidates, target, 0, comb, res);
-        return res;
-    }
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+    sort(candidates.begin(), candidates.end());
+    vector<vector<int>> result;
+    vector<int> current;
     
-private:
-    void dfs(vector<int>& candidates, int target, int idx, vector<int>& comb, vector<vector<int>>& res) {
-        if (target == 0) {
-            res.push_back(comb);
+    function<void(int, int)> dfs = [&](int index, int remaining) {
+        if (remaining == 0) {
+            result.push_back(current);
             return;
         }
-        for (int i = idx; i < candidates.size(); ++i) {
-            if (candidates[i] <= target) {
-                comb.push_back(candidates[i]);
-                dfs(candidates, target - candidates[i], i, comb, res);
-                comb.pop_back();
-            }
+        for (int i = index; i < candidates.size(); i++) {
+            if (candidates[i] > remaining) break;
+            current.push_back(candidates[i]);
+            dfs(i, remaining - candidates[i]);
+            current.pop_back();
         }
+    };
+    
+    dfs(0, target);
+    return result;
+}
+
+int main() {
+    vector<int> candidates = {2, 3, 6, 7};
+    int target = 7;
+    vector<vector<int>> result = combinationSum(candidates, target);
+
+    for (auto& comb : result) {
+        for (int num : comb) {
+            cout << num << \ \;
+        }
+        cout << endl;
     }
+
+    return 0;
+}
+
 };

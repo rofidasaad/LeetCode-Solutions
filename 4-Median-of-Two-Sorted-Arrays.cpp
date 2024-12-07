@@ -1,42 +1,38 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        if (nums1.size() > nums2.size()) {
-            swap(nums1, nums2);
-        }
-        
-        int m = nums1.size();
-        int n = nums2.size();
-        int total_length = m + n;
-        int half = (total_length + 1) / 2;
-        
-        int left = 0;
-        int right = m;
-        
-        while (left <= right) {
-            int partition_x = (left + right) / 2;
-            int partition_y = half - partition_x;
-            
-            double max_left_x = (partition_x == 0) ? INT_MIN : nums1[partition_x - 1];
-            double min_right_x = (partition_x == m) ? INT_MAX : nums1[partition_x];
-            
-            double max_left_y = (partition_y == 0) ? INT_MIN : nums2[partition_y - 1];
-            double min_right_y = (partition_y == n) ? INT_MAX : nums2[partition_y];
-            
-            if (max_left_x <= min_right_y && max_left_y <= min_right_x) {
-                if (total_length % 2 == 1) {
-                    return max(max_left_x, max_left_y);
+        return Median(nums1, nums2);
+    }
+
+    double Median(vector<int>& nums1, vector<int>& nums2) {
+        int i = 0, j = 0, count = 0;
+        int m1 = 0, m2 = 0;
+        int size = nums1.size() + nums2.size();
+
+        while (count < size / 2 + 1) {
+            m2 = m1;
+            if (i < nums1.size() && j < nums2.size()) {
+                if (nums1[i] <= nums2[j]) {
+                    m1 = nums1[i];
+                    i++;
+                } else {
+                    m1 = nums2[j];
+                    j++;
                 }
-                return (max(max_left_x, max_left_y) + min(min_right_x, min_right_y)) / 2.0;
+            } else if (i < nums1.size()) {
+                m1 = nums1[i];
+                i++;
+            } else if (j < nums2.size()) {
+                m1 = nums2[j];
+                j++;
             }
-            else if (max_left_x > min_right_y) {
-                right = partition_x - 1;
-            }
-            else {
-                left = partition_x + 1;
-            }
+            count++;
         }
-        
-        throw runtime_error(\Input arrays are not sorted\);
+
+        if (size % 2 == 0) {
+            return (m1 + m2) / 2.0;
+        } else {
+            return m1;
+        }
     }
 };
